@@ -1,11 +1,12 @@
 <template>
+    <Sidebar v-model="drawer" />
     <nav>
-        <Sidebar v-model="drawer" />
+
         <v-app-bar app flat density="compact" @click="drawer = !drawer">
             <template v-slot:prepend>
                 <v-app-bar-nav-icon></v-app-bar-nav-icon>
             </template>
-            <v-spacer></v-spacer>
+
             <!--  -->
             <v-menu transition="scale-transition">
 
@@ -13,8 +14,7 @@
                     <div class="text-center">
                         <v-btn color="dark" v-bind="props">
                             <template v-slot:prepend>
-                                <v-avatar image="https://cdn-icons-png.flaticon.com/512/2552/2552801.png"
-                                    size="x-small"></v-avatar>
+                                <v-avatar image="images/polomolok.png" size="small"></v-avatar>
                             </template>
                             Administrator
                             <template v-slot:append>

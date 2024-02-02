@@ -1,0 +1,22 @@
+{
+    "residents" : [
+        {
+            "residentId" : 1234,
+            "firstName" : "John",
+            "middleName" : "Medina",
+            "lastName":"Decosta",
+            "suffix" : "Jr",
+            "birthDate":"01-JAN-2023",
+            "age":20,
+            "sex":"Male",
+            "religion":"Roman Catholic",
+            "citizenship" : "Filipino",
+            "occupation" : "Programmer",
+            "contact": "09301791280",
+            "maritalStatus":"Single",
+            "purok":"San Miguel",
+            "address":"Polomolok South Cotabato"
+
+        }
+    ]
+}

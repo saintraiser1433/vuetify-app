@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>Home Page</h1>
+    <h1>Backup Page</h1>
   </div>
 </template>
 
@@ -10,7 +10,7 @@ import { defineComponent } from 'vue';
 // Components
 
 export default defineComponent({
-  name: 'HomeView',
+  name: 'BackupVue',
 
   components: {
  

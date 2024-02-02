@@ -1,9 +1,16 @@
 <template>
-  <v-app>
-    <Navbar/>
-    <!-- <SideBar/> -->
-    <v-main class="bg-grey-lighten-4">
-      <router-view/>
+  <v-app class="bg-grey-lighten-4">
+    <Navbar />
+    <v-main class="my-4 mx-4">
+      <v-card class="mx-auto w-100 h-100" elevation="3">
+        <v-card-text>
+          <router-view />
+        </v-card-text>
+
+
+
+      </v-card>
+
     </v-main>
   </v-app>
 </template>
@@ -15,10 +22,11 @@ export default {
   name: 'App',
   components: {
     Navbar,
-    // SideBar
   },
-  data: () => ({
-    //
-  }),
+  setup() {
+
+
+  }
+
 }
 </script>
