@@ -6,7 +6,7 @@
       </v-col>
       <v-col cols="auto">
         <Popup :title="title" :btnTitle="title">
-          <ResidentModal />
+
         </Popup>
       </v-col>
     </v-row>
@@ -24,7 +24,7 @@
 
 <script>
 import Popup from '../components/Popup.vue'
-import ResidentModal from '../components/Residents/ResidentModal'
+// import ResidentModal from '../components/Residents/ResidentModal'
 import TextPanel from '@/components/TextPanel.vue';
 import { ref, defineComponent } from 'vue';
 // Components
@@ -33,7 +33,7 @@ export default defineComponent({
   name: 'ResidentVue',
   components: {
     Popup,
-    ResidentModal,
+    // ResidentModal,
     TextPanel
   },
   data() {
