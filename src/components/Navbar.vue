@@ -9,7 +9,6 @@
 
             <!--  -->
             <v-menu transition="scale-transition">
-
                 <template v-slot:activator="{ props }">
                     <div class="text-center">
                         <v-btn color="dark" v-bind="props">
@@ -28,13 +27,9 @@
 
                     <v-list-item class="compact font-weight-bold" v-for="i in menu" :key="i.title" link>
                         <template #prepend>
-                            <v-list-item-icon>
-                                <v-icon color="text-grey">{{ i.icon }}</v-icon>
-                            </v-list-item-icon>
+                            <v-icon color="text-grey">{{ i.icon }}</v-icon>
                         </template>
-                        <v-list-item-content>
-                            <v-list-item-title class="ml-5">{{ i.title }}</v-list-item-title>
-                        </v-list-item-content>
+                        <v-list-item-title class="ml-5">{{ i.title }}</v-list-item-title>
                     </v-list-item>
 
                 </v-list>

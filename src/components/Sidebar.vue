@@ -12,18 +12,10 @@
         <v-divider></v-divider>
         <v-list>
             <v-list-item class="compact font-weight-bold" link v-for="i in item" :key="i.title" :to="i.path">
-
                 <template #prepend>
-                    <v-list-item-icon>
-                        <v-icon color="text-grey">{{ i.icon }}</v-icon>
-                    </v-list-item-icon>
+                    <v-icon color="text-grey">{{ i.icon }}</v-icon>
                 </template>
-                <v-list-item-content>
-                    <v-list-item-title class="ml-5">{{ i.title }}</v-list-item-title>
-                </v-list-item-content>
-
-
-
+                <v-list-item-title>{{ i.title }}</v-list-item-title>
             </v-list-item>
         </v-list>
 

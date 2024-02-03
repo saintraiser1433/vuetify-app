@@ -1,85 +1,20 @@
 <template>
-    <v-dialog persistent width="1024">
+    <v-dialog persistent transition="dialog-bottom-transition" width="1024">
         <template v-slot:activator="{ props }">
             <v-btn color="primary" v-bind="props">
                 <v-icon left class="mr-2">mdi-account-plus</v-icon>
                 {{ btnTitle }}
             </v-btn>
         </template>
-        <template v-slot:default="{ isActive }">
-            <v-card>
-                <form>
-                    <v-toolbar color="primary">
-                        <v-toolbar-title class="text-uppercase">{{ title }}</v-toolbar-title>
-                    </v-toolbar>
-                    <v-container>
-                        <v-row>
-                            <v-col cols="12" sm="6" md="4">
-                                <div class="text-subtitle-1 text-medium-emphasis">Resident ID</div>
-                                <v-text-field density="compact" variant="outlined"></v-text-field>
-                            </v-col>
-                            <v-col cols="12" sm="6" md="4">
-                                <div class="text-subtitle-1 text-medium-emphasis">First Name</div>
-                                <v-text-field density="compact" variant="outlined"></v-text-field>
-                            </v-col>
-                            <v-col cols="12" sm="6" md="4">
-                                <div class="text-subtitle-1 text-medium-emphasis">Middle Name</div>
-                                <v-text-field density="compact" variant="outlined"></v-text-field>
-                            </v-col>
-                            <v-col cols="12" sm="6" md="4">
-                                <div class="text-subtitle-1 text-medium-emphasis">Last Name</div>
-                                <v-text-field density="compact" variant="outlined"></v-text-field>
-                            </v-col>
-                            <v-col cols="12" sm="6" md="4">
-                                <div class="text-subtitle-1 text-medium-emphasis">Birth Date</div>
-                                <v-text-field density="compact" variant="outlined" type="date"></v-text-field>
-                            </v-col>
-                            <v-col cols="12" sm="6" md="4">
-                                <div class="text-subtitle-1 text-medium-emphasis">Age</div>
-                                <v-text-field type="number" density="compact" variant="outlined"></v-text-field>
-                            </v-col>
-                            <v-col cols="12" sm="6" md="4">
-                                <div class="text-subtitle-1 text-medium-emphasis">Sex</div>
-                                <v-select density="compact" :items="sex" variant="outlined"></v-select>
-                            </v-col>
-                            <v-col cols="12" sm="6" md="4">
-                                <div class="text-subtitle-1 text-medium-emphasis">Religion</div>
-                                <v-select density="compact" :items="religion" variant="outlined"></v-select>
-                            </v-col>
-                            <v-col cols="12" sm="6" md="4">
-                                <div class="text-subtitle-1 text-medium-emphasis">Citizenship</div>
-                                <v-select density="compact" :items="citizen" variant="outlined"></v-select>
-                            </v-col>
-                            <v-col cols="12" sm="6" md="4">
-                                <div class="text-subtitle-1 text-medium-emphasis">Occupation</div>
-                                <v-text-field density="compact" variant="outlined"></v-text-field>
-                            </v-col>
-                            <v-col cols="12" sm="6" md="4">
-                                <div class="text-subtitle-1 text-medium-emphasis">Contact No.</div>
-                                <v-text-field type="number" density="compact" variant="outlined"></v-text-field>
-                            </v-col>
-                            <v-col cols="12" sm="6" md="4">
-                                <div class="text-subtitle-1 text-medium-emphasis">Marital Status</div>
-                                <v-select density="compact" :items="maritalStatus" variant="outlined"></v-select>
-                            </v-col>
-                            <v-col cols="12" sm="6" md="4">
-                                <div class="text-subtitle-1 text-medium-emphasis">Purok</div>
-                                <v-text-field density="compact" variant="outlined"></v-text-field>
-                            </v-col>
-                            <v-col cols="12" sm="6" md="8">
-                                <div class="text-subtitle-1 text-medium-emphasis">Address</div>
-                                <v-text-field density="compact" variant="outlined"></v-text-field>
-                            </v-col>
-                        </v-row>
-
-                    </v-container>
-                    <v-card-actions class="justify-end">
-                        <v-btn class="bg-pink" @click="isActive.value = false">Cancel</v-btn>
-                        <v-btn class="bg-primary">Submit</v-btn>
-                    </v-card-actions>
-                </form>
-            </v-card>
-        </template>
+        <v-card>
+            <v-toolbar color="primary">
+                <v-toolbar-title class="text-uppercase">{{ title }}</v-toolbar-title>
+            </v-toolbar>
+            <v-container>
+                <slot name="body"></slot>
+            </v-container>
+            <slot name="footer"></slot>
+        </v-card>
     </v-dialog>
 </template>
 
@@ -97,14 +32,6 @@ export default {
             default: ''
         },
     },
-    data() {
-        return {
-            sex: ['Male', 'Female'],
-            religion: ['Roman Catholic', 'Islam', 'Inc'],
-            citizen: ['Filipino', 'American'],
-            maritalStatus: ['Single', 'Married', 'Complicated']
-        }
-    }
 
 }
 </script>

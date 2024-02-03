@@ -1,89 +1,228 @@
 <template>
+  <SnackBar :text="messageSnack" :status="status" v-model="snackBackOpen" />
   <v-card flat>
     <v-row justify="space-between" align="center">
       <v-col cols="auto">
         <TextPanel />
       </v-col>
       <v-col cols="auto">
-        <Popup :title="title" :btnTitle="title">
 
+        <Popup :title="title" :btnTitle="title" v-model="isActive">
+          <template v-slot:body>
+            <v-form @submit.prevent="submitForm">
+              <v-row>
+                <v-col cols="12" sm="6" md="4">
+                  <div class="text-subtitle-1 text-medium-emphasis">Resident ID</div>
+                  <v-text-field density="compact" v-model="residentId" variant="outlined"></v-text-field>
+                </v-col>
+                <v-col cols="12" sm="6" md="4">
+                  <div class="text-subtitle-1 text-medium-emphasis">First Name</div>
+                  <v-text-field density="compact" v-model="firstName" variant="outlined"></v-text-field>
+                </v-col>
+                <v-col cols="12" sm="6" md="4">
+                  <div class="text-subtitle-1 text-medium-emphasis">Middle Name</div>
+                  <v-text-field density="compact" v-model="middleName" variant="outlined"></v-text-field>
+                </v-col>
+                <v-col cols="12" sm="6" md="4">
+                  <div class="text-subtitle-1 text-medium-emphasis">Last Name</div>
+                  <v-text-field density="compact" v-model="lastName" variant="outlined"></v-text-field>
+                </v-col>
+                <v-col cols="12" sm="6" md="4">
+                  <div class="text-subtitle-1 text-medium-emphasis">Suffix</div>
+                  <v-text-field density="compact" v-model="suffix" variant="outlined"></v-text-field>
+                </v-col>
+                <v-col cols="12" sm="6" md="4">
+                  <div class="text-subtitle-1 text-medium-emphasis">Birth Date</div>
+                  <v-text-field type="date" density="compact" v-model="birthDate" variant="outlined"></v-text-field>
+                </v-col>
+                <v-col cols="12" sm="6" md="4">
+                  <div class="text-subtitle-1 text-medium-emphasis">Age</div>
+                  <v-text-field density="compact" v-model="age" variant="outlined"></v-text-field>
+                </v-col>
+                <v-col cols="12" sm="6" md="4">
+                  <div class="text-subtitle-1 text-medium-emphasis">Sex</div>
+                  <v-text-field density="compact" v-model="sex" variant="outlined"></v-text-field>
+                </v-col>
+                <v-col cols="12" sm="6" md="4">
+                  <div class="text-subtitle-1 text-medium-emphasis">Religion</div>
+                  <v-text-field density="compact" v-model="religion" variant="outlined"></v-text-field>
+                </v-col>
+                <v-col cols="12" sm="6" md="4">
+                  <div class="text-subtitle-1 text-medium-emphasis">Citizenship</div>
+                  <v-text-field density="compact" v-model="citizenship" variant="outlined"></v-text-field>
+                </v-col>
+                <v-col cols="12" sm="6" md="4">
+                  <div class="text-subtitle-1 text-medium-emphasis">Occupation</div>
+                  <v-text-field density="compact" v-model="occupation" variant="outlined"></v-text-field>
+                </v-col>
+                <v-col cols="12" sm="6" md="4">
+                  <div class="text-subtitle-1 text-medium-emphasis">Contact No.</div>
+                  <v-text-field density="compact" v-model="contact" variant="outlined"></v-text-field>
+                </v-col>
+                <v-col cols="12" sm="6" md="4">
+                  <div class="text-subtitle-1 text-medium-emphasis">Marital Status</div>
+                  <v-text-field density="compact" v-model="maritalStatus" variant="outlined"></v-text-field>
+                </v-col>
+                <v-col cols="12" sm="6" md="4">
+                  <div class="text-subtitle-1 text-medium-emphasis">Purok</div>
+                  <v-text-field density="compact" v-model="purok" variant="outlined"></v-text-field>
+                </v-col>
+                <v-col cols="12" sm="6" md="4">
+                  <div class="text-subtitle-1 text-medium-emphasis">Address</div>
+                  <v-text-field density="compact" v-model="address" variant="outlined"></v-text-field>
+                </v-col>
+              </v-row>
+              <v-card-actions class="justify-end">
+                <v-btn class="bg-pink" @click="closePopup">Close</v-btn>
+                <v-btn type="submit" class="bg-primary">Submit</v-btn>
+              </v-card-actions>
+            </v-form>
+          </template>
         </Popup>
       </v-col>
     </v-row>
-    <v-card-title class="d-flex align-center pe-2">
-      <v-text-field v-model="search" prepend-inner-icon="mdi-magnify" density="compact" label="Search" single-line flat
-        hide-details variant="solo-filled"></v-text-field>
-    </v-card-title>
+    <Suspense>
+      <template #default>
+        <ResidentTable :items="item" @emitEdit="myEdit" />
+      </template>
+      <template #fallback>
+        <p>Loading</p>
+      </template>
+    </Suspense>
 
-    <v-divider></v-divider>
-    <v-data-table v-model:search="search" :items="items">
-
-    </v-data-table>
   </v-card>
 </template>
 
 <script>
-import Popup from '../components/Popup.vue'
-// import ResidentModal from '../components/Residents/ResidentModal'
+import Popup from '@/components/Popup.vue'
 import TextPanel from '@/components/TextPanel.vue';
-import { ref, defineComponent } from 'vue';
+
+import SnackBar from '@/components/Snackbar.vue'
+import { ref, reactive, defineComponent, defineAsyncComponent, toRefs, onMounted, watchEffect } from 'vue';
+import HttpService from '../services/http'
 // Components
+const ResidentTable = defineAsyncComponent({
+  loader: () => import('../components/Tables.vue')
+})
+
+
 
 export default defineComponent({
   name: 'ResidentVue',
   components: {
     Popup,
-    // ResidentModal,
-    TextPanel
-  },
-  data() {
-    return {
-      search: '',
-      items: [
-        {
-          residentID: 'Nebula GTX 3080',
-          fullName: '1.png',
-          price: 699.99,
-          rating: 5,
-          stock: true,
-        },
-        {
-          name: 'Galaxy RTX 3080',
-          image: '2.png',
-          price: 799.99,
-          rating: 4,
-          stock: false,
-        },
-        {
-          name: 'Orion RX 6800 XT',
-          image: '3.png',
-          price: 649.99,
-          rating: 3,
-          stock: true,
-        },
-        {
-          name: 'Vortex RTX 3090',
-          image: '4.png',
-          price: 1499.99,
-          rating: 4,
-          stock: true,
-        },
-        {
-          name: 'Cosmos GTX 1660 Super',
-          image: '5.png',
-          price: 299.99,
-          rating: 4,
-          stock: false,
-        },
-      ],
-    }
+    ResidentTable,
+    TextPanel,
+    SnackBar
   },
   setup() {
-    const title = ref('Insert Residents');
+
+    //Initialize variables
+    const url = ref('/residents')
+    const title = ref('Insert Residents')
+    const isActive = ref(false)
+    const search = ref('')
+    const item = ref([])
+    const error = ref(null)
+    const isUpdate = ref(false);
+    const messageSnack = ref('')
+    const status = ref(null)
+    const snackBackOpen = ref(false)
+    const residentForm = reactive({
+      residentId: '',
+      firstName: '',
+      middleName: '',
+      lastName: '',
+      suffix: '',
+      birthDate: '',
+      age: '',
+      sex: '',
+      religion: '',
+      citizenship: '',
+      occupation: '',
+      contact: '',
+      maritalStatus: '',
+      purok: '',
+      address: ''
+    })
+
+    //http
+    async function getResident() {
+      await HttpService.fetchData(url.value).then((response) => {
+        if (response.status === 200) {
+          item.value = response.data
+        } else {
+          error.value = 'Error'
+        }
+
+      }).catch((e) => {
+        error.value = e.message
+      });
+    }
+
+    async function addResident() {
+      await HttpService.addData(url.value, residentForm).then((response) => {
+        if (response.status === 201) {
+          messageSnack.value = "Successfully added"
+          status.value = "success";
+          item.value.push({ ...residentForm })
+        }
+        isUpdate.value = false
+        isActive.value = false;
+      }).catch((e) => {
+        status.value = "error";
+        messageSnack.value = e.message
+      });
+    }
+
+
+    //methods
+
+
+
+
+    const closePopup = () => {
+      isActive.value = false;
+    };
+    const submitForm = () => {
+      addResident()
+      snackBackOpen.value = true
+    }
+
+    function myEdit(val){
+      alert(JSON.stringify(val))
+    }
+
+
+
+
+
+    //computed
+
+
+    //watchers
+    watchEffect(() => {
+
+    })
+
+    //lifecyclehooks
+    onMounted(() => {
+      getResident()
+    })
 
     return {
-      title
+      title,
+      isActive,
+      submitForm,
+      closePopup,
+      search,
+      item,
+      messageSnack,
+      status,
+      snackBackOpen,
+      myEdit,
+      ...toRefs(residentForm)
     }
-  }
+  },
 });
 </script>

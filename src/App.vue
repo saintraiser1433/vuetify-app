@@ -1,17 +1,17 @@
-<template>
-  <v-app class="bg-grey-lighten-4">
+<template >
+  <v-app>
     <Navbar />
-    <v-main class="my-4 mx-4">
-      <v-card class="mx-auto w-100 h-100" elevation="3">
-        <v-card-text>
-          <router-view />
-        </v-card-text>
+    <div class="bg-grey-lighten-4 h-100">
+      <v-divider></v-divider>
+      <v-main class="my-4 mx-4">
+        <v-card class="mx-auto w-100 h-100" elevation="3" scrollable>
+          <v-card-text>
+            <router-view />
+          </v-card-text>
+        </v-card>
 
-
-
-      </v-card>
-
-    </v-main>
+      </v-main>
+    </div>
   </v-app>
 </template>
 
@@ -23,10 +23,7 @@ export default {
   components: {
     Navbar,
   },
-  setup() {
-
-
-  }
 
 }
 </script>
+
