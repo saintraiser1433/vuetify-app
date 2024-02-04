@@ -1,35 +1,36 @@
-import axios from 'axios'
-
+import axios from "axios";
 
 const http = axios.create({
-    baseURL: 'http://localhost:3000',
-    headers: {
-        "Content-type": "application/json"
-    }
-})
+  baseURL: "http://localhost/profiling-api/Resident",
+  headers: {
+    "Content-type": "application/json",
+  },
+});
 
 class HttpServices {
+  fetchData(url) {
+    return http.get(url);
+  }
 
-    fetchData(url) {
-        return http.get(url);
-    }
+  addData(url, post) {
+    return http.post(url, post);
+  }
 
-    addData(url,post) {
-        return http.post(url, post);
-    }
+  updateData(url, post) {
+    return http.post(`${url}`, post);
+  }
 
-    updateData(id, post) {
-        return http.put(`/data/${id}`, post);
-    }
+  deleteData(url, id) {
+    return http.delete(`${url}`, {
+      params: {
+        id: id,
+      },
+    });
+  }
 
-    deleteData(id) {
-        return http.delete(`/data/${id}`);
-    }
-
-    getDataById(id) {
-        return http.get(`/data/${id}`);
-    }
-
+  getDataById(id) {
+    return http.get(`/data/${id}`);
+  }
 }
 
-export default new HttpServices()
+export default new HttpServices();
