@@ -1,9 +1,9 @@
 <template>
     <v-dialog persistent transition="dialog-bottom-transition" width="1024">
         <template v-slot:activator="{ props }">
-            <v-btn color="primary" v-bind="props">
+            <v-btn color="primary" v-bind="props" @click="openModal">
                 <v-icon left class="mr-2">mdi-account-plus</v-icon>
-                {{ btnTitle }}
+                {{ btnName }}
             </v-btn>
         </template>
         <v-card>
@@ -27,11 +27,22 @@ export default {
             type: String,
             default: ''
         },
-        btnTitle: {
+        btnName: {
             type: String,
             default: ''
         },
     },
+    setup(props,context){
+
+        function openModal(){
+            context.emit('openModal');
+        }
+
+        return {
+            openModal
+        }
+
+    }
 
 }
 </script>

@@ -6,71 +6,86 @@
         <TextPanel />
       </v-col>
       <v-col cols="auto">
-        <Popup :title="title" :btnTitle="title" v-model="isActive">
+        <Popup :title="title" btnName="Insert Resident" @openModal="changeInsertTitle" v-model="isActive">
           <template v-slot:body>
-            <v-form @submit.prevent="submitForm">
+            <v-form @submit.prevent="onSubmit">
               <v-row>
                 <v-col cols="12" sm="6" md="4">
                   <div class="text-subtitle-1 text-medium-emphasis">Resident ID</div>
-                  <v-text-field density="compact" v-model="resident_id" variant="outlined"></v-text-field>
+                  <v-text-field density="compact" v-model="resident_id.value.value" counter="10"
+                    :error-messages="resident_id.errorMessage.value" variant="outlined"></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="6" md="4">
                   <div class="text-subtitle-1 text-medium-emphasis">First Name</div>
-                  <v-text-field density="compact" v-model="fname" variant="outlined"></v-text-field>
+                  <v-text-field density="compact" v-model="fname.value.value" :error-messages="fname.errorMessage.value"
+                    variant="outlined"></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="6" md="4">
                   <div class="text-subtitle-1 text-medium-emphasis">Middle Name</div>
-                  <v-text-field density="compact" v-model="mname" variant="outlined"></v-text-field>
+                  <v-text-field density="compact" v-model="mname.value.value" :error-messages="mname.errorMessage.value"
+                    variant="outlined"></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="6" md="4">
                   <div class="text-subtitle-1 text-medium-emphasis">Last Name</div>
-                  <v-text-field density="compact" v-model="lname" variant="outlined"></v-text-field>
+                  <v-text-field density="compact" v-model="lname.value.value" :error-messages="lname.errorMessage.value"
+                    variant="outlined"></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="6" md="4">
                   <div class="text-subtitle-1 text-medium-emphasis">Suffix</div>
-                  <v-text-field density="compact" v-model="suffix" variant="outlined"></v-text-field>
+                  <v-text-field density="compact" v-model="suffix.value.value" :error-messages="suffix.errorMessage.value"
+                    variant="outlined"></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="6" md="4">
                   <div class="text-subtitle-1 text-medium-emphasis">Birth Date</div>
-                  <v-text-field type="date" density="compact" v-model="bdate" variant="outlined"></v-text-field>
+                  <v-text-field type="date" density="compact" v-model="bdate.value.value"
+                    :error-messages="bdate.errorMessage.value" variant="outlined"></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="6" md="4">
                   <div class="text-subtitle-1 text-medium-emphasis">Age</div>
-                  <v-text-field type="number" density="compact" v-model="age" variant="outlined"></v-text-field>
+                  <v-text-field type="number" density="compact" v-model="age.value.value"
+                    :error-messages="age.errorMessage.value" variant="outlined"></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="6" md="4">
                   <div class="text-subtitle-1 text-medium-emphasis">Sex</div>
-                  <v-select :items="genderItem" density="compact" v-model="sex" variant="outlined">
+                  <v-select :items="genderItem" density="compact" v-model="sex.value.value"
+                    :error-messages="sex.errorMessage.value" variant="outlined">
                   </v-select>
                 </v-col>
                 <v-col cols="12" sm="6" md="4">
                   <div class="text-subtitle-1 text-medium-emphasis">Religion</div>
-                  <v-select :items="religionItem" density="compact" v-model="religion" variant="outlined"></v-select>
+                  <v-select :items="religionItem" density="compact" v-model="religion.value.value"
+                    :error-messages="religion.errorMessage.value" variant="outlined"></v-select>
                 </v-col>
                 <v-col cols="12" sm="6" md="4">
                   <div class="text-subtitle-1 text-medium-emphasis">Citizenship</div>
-                  <v-select :items="citizenItem" density="compact" v-model="citizenship" variant="outlined"></v-select>
+                  <v-select :items="citizenItem" density="compact" v-model="citizenship.value.value"
+                    :error-messages="citizenship.errorMessage.value" variant="outlined"></v-select>
                 </v-col>
                 <v-col cols="12" sm="6" md="4">
                   <div class="text-subtitle-1 text-medium-emphasis">Occupation</div>
-                  <v-text-field density="compact" v-model="occupation" variant="outlined"></v-text-field>
+                  <v-text-field density="compact" v-model="occupation.value.value"
+                    :error-messages="occupation.errorMessage.value" variant="outlined"></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="6" md="4">
                   <div class="text-subtitle-1 text-medium-emphasis">Contact No.</div>
-                  <v-text-field type="number" density="compact" v-model="cont_no" variant="outlined"></v-text-field>
+                  <v-text-field type="number" density="compact" v-model="cont_no.value.value"
+                    :error-messages="cont_no.errorMessage.value" variant="outlined"></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="6" md="4">
                   <div class="text-subtitle-1 text-medium-emphasis">Marital Status</div>
-                  <v-select :items="statusItem" density="compact" item-text="description" item-value="id" v-model="status"
+                  <v-select :items="statusItem" density="compact" item-text="description" item-value="id"
+                    v-model="status.value.value" :error-messages="status.errorMessage.value"
                     variant="outlined"></v-select>
                 </v-col>
                 <v-col cols="12" sm="6" md="4">
                   <div class="text-subtitle-1 text-medium-emphasis">Purok</div>
-                  <v-text-field density="compact" v-model="purok" variant="outlined"></v-text-field>
+                  <v-text-field density="compact" v-model="purok.value.value" :error-messages="purok.errorMessage.value"
+                    variant="outlined"></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="6" md="4">
                   <div class="text-subtitle-1 text-medium-emphasis">Address</div>
-                  <v-text-field density="compact" v-model="address" variant="outlined"></v-text-field>
+                  <v-text-field density="compact" v-model="address.value.value"
+                    :error-messages="address.errorMessage.value" variant="outlined"></v-text-field>
                 </v-col>
               </v-row>
               <v-card-actions class="justify-end">
@@ -111,10 +126,12 @@ import Popup from '@/components/Popup.vue'
 import TextPanel from '@/components/TextPanel.vue';
 import Swal from 'sweetalert2'
 import SnackBar from '@/components/Snackbar.vue'
-import { ref, reactive, defineComponent, defineAsyncComponent, toRefs, onMounted, watchEffect } from 'vue';
+import { ref, defineComponent, defineAsyncComponent, onMounted, watchEffect } from 'vue';
 import HttpService from '@/services/http'
 import { genderSelection, religionSelection, citizenSelection, statusSelection } from '@/constants/Residents/selection'
 import { tableHeaders } from '@/constants/Residents/tableHeaders'
+import { useForm, useField } from 'vee-validate'
+import * as yup from 'yup'
 // Components
 const ResidentTable = defineAsyncComponent({
   loader: () => import('../components/Table.vue')
@@ -146,27 +163,63 @@ export default defineComponent({
     const citizenItem = ref(citizenSelection)
     const statusItem = ref(statusSelection)
     const headers = ref(tableHeaders)
+    const yupSchema = yup.object({
+      resident_id: yup.string().required().min(10),
+      fname: yup.string().required(),
+      mname: yup.string().required(),
+      lname: yup.string().required(),
+      suffix: yup.string().required(),
+      bdate: yup.date().required(),
+      age: yup.number().min(3).required(),
+      sex: yup.string().required(),
+      cont_no: yup.number().min(3).required(),
+      religion: yup.string().required(),
+      citizenship: yup.string().required(),
+      occupation: yup.string().required(),
+      status: yup.string().required(),
+      purok: yup.string().required(),
+      address: yup.string().required(),
+    });
+
+    const { handleSubmit, setFieldValue } = useForm({
+      validationSchema: yupSchema
+    });
+
+    const resident_id = useField('resident_id');
+    const fname = useField('fname');
+    const mname = useField('mname');
+    const lname = useField('lname');
+    const suffix = useField('suffix');
+    const bdate = useField('bdate');
+    const age = useField('age');
+    const sex = useField('sex');
+    const religion = useField('religion');
+    const citizenship = useField('citizenship');
+    const occupation = useField('occupation');
+    const status = useField('status');
+    const purok = useField('purok');
+    const address = useField('address');
+    const cont_no = useField('cont_no');
 
 
 
-
-    const residentForm = reactive({
-      resident_id: '',
-      fname: '',
-      mname: '',
-      lname: '',
-      suffix: '',
-      bdate: '',
-      age: '',
-      sex: '',
-      religion: '',
-      citizenship: '',
-      occupation: '',
-      cont_no: '',
-      status: '',
-      purok: '',
-      address: ''
-    })
+    // const residentForm = reactive({
+    //   resident_id: '',
+    //   fname: '',
+    //   mname: '',
+    //   lname: '',
+    //   suffix: '',
+    //   bdate: '',
+    //   age: '',
+    //   sex: '',
+    //   religion: '',
+    //   citizenship: '',
+    //   occupation: '',
+    //   cont_no: '',
+    //   status: '',
+    //   purok: '',
+    //   address: ''
+    // })
 
 
 
@@ -179,12 +232,12 @@ export default defineComponent({
       });
     }
 
-    async function addResident() {
-      await HttpService.addData('/getResident?action=POST', residentForm).then((response) => {
+    async function addResident(val) {
+      await HttpService.addData('/getResident?action=POST', val).then((response) => {
         messageSnack.value = response.data.message
         statustype.value = "success";
 
-        items.value.push({ ...residentForm })
+        items.value.push({ ...val })
         isUpdate.value = false
         isActive.value = false;
       }).catch((e) => {
@@ -194,16 +247,16 @@ export default defineComponent({
       snackBackOpen.value = true
     }
 
-    async function editResident() {
-      await HttpService.updateData('/getResident?action=PUT', residentForm).then((response) => {
+    async function editResident(val) {
+      await HttpService.updateData('/getResident?action=PUT', val).then((response) => {
         messageSnack.value = response.data.message
         statustype.value = "success";
-        const findIndex = items.value.findIndex((res) => res.resident_id === residentForm.resident_id)
-        items.value[findIndex] = { ...residentForm }
+        const findIndex = items.value.findIndex((res) => res.resident_id === val.resident_id)
+        items.value[findIndex] = { ...val }
         isUpdate.value = false
         isActive.value = false;
       }).catch((e) => {
-        statustype.value = "error";
+        statustype.value = "error"
         messageSnack.value = e.message
       });
       snackBackOpen.value = true
@@ -216,8 +269,8 @@ export default defineComponent({
 
         items.value = items.value.filter(res => res.resident_id !== `${id}`);
       }).catch((e) => {
-        statustype.value = "error";
- 
+        statustype.value = "error"
+        messageSnack.value = e.message
       });
       snackBackOpen.value = true
     }
@@ -228,16 +281,39 @@ export default defineComponent({
     const closePopup = () => {
       isActive.value = false;
     };
-    const submitForm = () => {
+
+    const onSubmit = handleSubmit(values => {
       if (isUpdate.value === true) {
-        editResident()
+        editResident(values)
       } else {
-        addResident()
+        addResident(values)
       }
+    });
+    // const submitForm = () => {
+    //   if (isUpdate.value === true) {
+    //     editResident()
+    //   } else {
+    //     addResident()
+    //   }
+    // }
+
+    function changeInsertTitle() {
+      const keys = Object.keys(yupSchema.fields);
+      for (const key of keys) {
+        setFieldValue(key, '')
+      }
+      title.value = "Insert Residents"
+      isUpdate.value = false
+
     }
 
     function editItem(val) {
-      Object.assign(residentForm, val)
+      const keys = Object.keys(yupSchema.fields);
+      for (const key of keys) {
+        setFieldValue(key, val[key])
+      }
+      // Object.assign(residentForm, val)
+      title.value = "Update Residents"
       isUpdate.value = true
       isActive.value = true
     }
@@ -274,7 +350,7 @@ export default defineComponent({
     return {
       title,
       isActive,
-      submitForm,
+      // submitForm,
       closePopup,
       search,
       items,
@@ -288,7 +364,25 @@ export default defineComponent({
       religionItem,
       citizenItem,
       statusItem,
-      ...toRefs(residentForm)
+      changeInsertTitle,
+      resident_id,
+      fname,
+      mname,
+      lname,
+      suffix,
+      bdate,
+      age,
+      sex,
+      religion,
+      citizenship,
+      occupation,
+      status,
+      purok,
+      address,
+      cont_no,
+      onSubmit,
+
+      // ...toRefs(residentForm)
     }
   },
 });
