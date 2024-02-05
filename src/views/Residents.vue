@@ -36,19 +36,20 @@
                 </v-col>
                 <v-col cols="12" sm="6" md="4">
                   <div class="text-subtitle-1 text-medium-emphasis">Age</div>
-                  <v-text-field density="compact" v-model="age" variant="outlined"></v-text-field>
+                  <v-text-field type="number" density="compact" v-model="age" variant="outlined"></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="6" md="4">
                   <div class="text-subtitle-1 text-medium-emphasis">Sex</div>
-                  <v-text-field density="compact" v-model="sex" variant="outlined"></v-text-field>
+                  <v-select :items="genderItem" density="compact" v-model="sex" variant="outlined">
+                  </v-select>
                 </v-col>
                 <v-col cols="12" sm="6" md="4">
                   <div class="text-subtitle-1 text-medium-emphasis">Religion</div>
-                  <v-text-field density="compact" v-model="religion" variant="outlined"></v-text-field>
+                  <v-select :items="religionItem" density="compact" v-model="religion" variant="outlined"></v-select>
                 </v-col>
                 <v-col cols="12" sm="6" md="4">
                   <div class="text-subtitle-1 text-medium-emphasis">Citizenship</div>
-                  <v-text-field density="compact" v-model="citizenship" variant="outlined"></v-text-field>
+                  <v-select :items="citizenItem" density="compact" v-model="citizenship" variant="outlined"></v-select>
                 </v-col>
                 <v-col cols="12" sm="6" md="4">
                   <div class="text-subtitle-1 text-medium-emphasis">Occupation</div>
@@ -56,11 +57,12 @@
                 </v-col>
                 <v-col cols="12" sm="6" md="4">
                   <div class="text-subtitle-1 text-medium-emphasis">Contact No.</div>
-                  <v-text-field density="compact" v-model="cont_no" variant="outlined"></v-text-field>
+                  <v-text-field type="number" density="compact" v-model="cont_no" variant="outlined"></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="6" md="4">
                   <div class="text-subtitle-1 text-medium-emphasis">Marital Status</div>
-                  <v-text-field density="compact" v-model="status" variant="outlined"></v-text-field>
+                  <v-select :items="statusItem" density="compact" item-text="description" item-value="id" v-model="status"
+                    variant="outlined"></v-select>
                 </v-col>
                 <v-col cols="12" sm="6" md="4">
                   <div class="text-subtitle-1 text-medium-emphasis">Purok</div>
@@ -84,7 +86,7 @@
       <template #default>
         <ResidentTable :items="items" :headers="headers">
           <template v-slot:[`item.fullname`]="{ item }">
-            <span>{{ item.lname }} {{ item.fname }} {{ item.mname[0] }}.</span>
+            {{ item.lname }} {{ item.fname }} {{ item.mname[0] }}
           </template>
           <template v-slot:[`item.actions`]="{ item }">
             <v-icon class="me-2 bg-yellow-darken-4 rounded-circle" @click="editItem(item)">
@@ -110,7 +112,9 @@ import TextPanel from '@/components/TextPanel.vue';
 import Swal from 'sweetalert2'
 import SnackBar from '@/components/Snackbar.vue'
 import { ref, reactive, defineComponent, defineAsyncComponent, toRefs, onMounted, watchEffect } from 'vue';
-import HttpService from '../services/http'
+import HttpService from '@/services/http'
+import { genderSelection, religionSelection, citizenSelection, statusSelection } from '@/constants/Residents/selection'
+import { tableHeaders } from '@/constants/Residents/tableHeaders'
 // Components
 const ResidentTable = defineAsyncComponent({
   loader: () => import('../components/Table.vue')
@@ -127,7 +131,6 @@ export default defineComponent({
     SnackBar
   },
   setup() {
-
     //Initialize variables
     const title = ref('Insert Residents')
     const isActive = ref(false)
@@ -138,15 +141,13 @@ export default defineComponent({
     const messageSnack = ref('')
     const statustype = ref(null)
     const snackBackOpen = ref(false)
+    const genderItem = ref(genderSelection)
+    const religionItem = ref(religionSelection)
+    const citizenItem = ref(citizenSelection)
+    const statusItem = ref(statusSelection)
+    const headers = ref(tableHeaders)
 
-    const headers = ref([
-      { title: 'Resident ID', align: 'start', key: 'resident_id', sortable: true },
-      { title: 'Full Name', align: 'start', key: 'fullname', sortable: true },
-      { title: 'Sex', align: 'start', key: 'sex', sortable: true },
-      { title: 'Occupation', align: 'start', key: 'occupation', sortable: true },
-      { title: 'Phone', align: 'start', key: 'cont_no', sortable: true },
-      { title: 'Actions', align: 'start', key: 'actions', sortable: false },
-    ])
+
 
 
     const residentForm = reactive({
@@ -182,7 +183,7 @@ export default defineComponent({
       await HttpService.addData('/getResident?action=POST', residentForm).then((response) => {
         messageSnack.value = response.data.message
         statustype.value = "success";
-        snackBackOpen.value = true
+
         items.value.push({ ...residentForm })
         isUpdate.value = false
         isActive.value = false;
@@ -190,13 +191,13 @@ export default defineComponent({
         statustype.value = "error";
         messageSnack.value = e.message
       });
+      snackBackOpen.value = true
     }
 
     async function editResident() {
       await HttpService.updateData('/getResident?action=PUT', residentForm).then((response) => {
         messageSnack.value = response.data.message
         statustype.value = "success";
-        snackBackOpen.value = true
         const findIndex = items.value.findIndex((res) => res.resident_id === residentForm.resident_id)
         items.value[findIndex] = { ...residentForm }
         isUpdate.value = false
@@ -205,18 +206,20 @@ export default defineComponent({
         statustype.value = "error";
         messageSnack.value = e.message
       });
+      snackBackOpen.value = true
     }
 
     async function deleteResident(id) {
       await HttpService.deleteData('/getResident?action=DELETE', id).then((response) => {
         messageSnack.value = response.data.message
-        statustype.value = 'dasdas';
-        snackBackOpen.value = true
+        statustype.value = 'success';
+
         items.value = items.value.filter(res => res.resident_id !== `${id}`);
       }).catch((e) => {
         statustype.value = "error";
-        messageSnack.value = e.message
+ 
       });
+      snackBackOpen.value = true
     }
 
 
@@ -239,6 +242,8 @@ export default defineComponent({
       isActive.value = true
     }
 
+
+
     function deleteItem(id) {
       Swal.fire({
         title: "Are you sure?",
@@ -255,13 +260,7 @@ export default defineComponent({
       });
     }
 
-
-
-
-
     //computed
-
-
     //watchers
     watchEffect(() => {
 
@@ -285,6 +284,10 @@ export default defineComponent({
       editItem,
       deleteItem,
       headers,
+      genderItem,
+      religionItem,
+      citizenItem,
+      statusItem,
       ...toRefs(residentForm)
     }
   },

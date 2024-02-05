@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const http = axios.create({
-  baseURL: "http://localhost/profiling-api/Resident",
+  baseURL: "http://localhost:8383/profiling-api/Resident",
   headers: {
     "Content-type": "application/json",
   },

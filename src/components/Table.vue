@@ -13,38 +13,15 @@
     </v-data-table>
 </template>
 
-   <!-- <template v-slot:item="{ item }">
-            <slot :item="item"></slot>
-        </template> -->
-<!-- <template v-slot:[`item.actions`]="{ item }">
-    <v-icon size="small" class="me-2" @click="edit(item)">
-        mdi-pencil
-    </v-icon>
-    <v-icon size="small" @click="deleteItem(item)">
-        mdi-delete
-    </v-icon>
-</template> -->
 
 <script>
-import { ref } from 'vue'
 export default {
     name: 'TableView',
     props: {
         items: Object,
         headers: Object
     },
-    setup(props, { emit }) {
-        const search = ref('')
-        function edit(val) {
-            emit('emitEdit', val)
-        }
-        return {
-            search,
-            edit
-        }
-
-
-    }
+    
 
 }
 </script>
