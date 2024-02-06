@@ -14,16 +14,14 @@
 </template>
 
 
-<script>
-export default {
-    name: 'TableView',
-    props: {
-        items: Object,
-        headers: Object
-    },
-    
+<script setup>
+import { ref } from 'vue'
+defineProps({
+    items: Object,
+    headers: Object
+})
 
-}
+const search = ref('');
 </script>
 
 <style scoped></style>
