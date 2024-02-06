@@ -121,269 +121,191 @@
   </v-card>
 </template>
 
-<script>
+<script setup>
 import Popup from '@/components/Popup.vue'
 import TextPanel from '@/components/TextPanel.vue';
 import Swal from 'sweetalert2'
 import SnackBar from '@/components/Snackbar.vue'
-import { ref, defineComponent, defineAsyncComponent, onMounted, watchEffect } from 'vue';
+import { ref, defineAsyncComponent, onMounted } from 'vue';
 import HttpService from '@/services/http'
 import { genderSelection, religionSelection, citizenSelection, statusSelection } from '@/constants/Residents/selection'
 import { tableHeaders } from '@/constants/Residents/tableHeaders'
 import { useForm, useField } from 'vee-validate'
 import * as yup from 'yup'
-// Components
+
+
+
 const ResidentTable = defineAsyncComponent({
   loader: () => import('../components/Table.vue')
 })
+const title = ref('Insert Residents');
+const isActive = ref(false);
+const items = ref([]);
+const error = ref(null);
+const isUpdate = ref(false);
+const messageSnack = ref('');
+const statustype = ref(null);
+const snackBackOpen = ref(false);
+const genderItem = ref(genderSelection);
+const religionItem = ref(religionSelection);
+const citizenItem = ref(citizenSelection);
+const statusItem = ref(statusSelection);
+const headers = ref(tableHeaders);
 
-
-
-export default defineComponent({
-  name: 'ResidentVue',
-  components: {
-    Popup,
-    ResidentTable,
-    TextPanel,
-    SnackBar
-  },
-  setup() {
-    //Initialize variables
-    const title = ref('Insert Residents')
-    const isActive = ref(false)
-    const search = ref('')
-    const items = ref([])
-    const error = ref(null)
-    const isUpdate = ref(false);
-    const messageSnack = ref('')
-    const statustype = ref(null)
-    const snackBackOpen = ref(false)
-    const genderItem = ref(genderSelection)
-    const religionItem = ref(religionSelection)
-    const citizenItem = ref(citizenSelection)
-    const statusItem = ref(statusSelection)
-    const headers = ref(tableHeaders)
-    const yupSchema = yup.object({
-      resident_id: yup.string().required().min(10),
-      fname: yup.string().required(),
-      mname: yup.string().required(),
-      lname: yup.string().required(),
-      suffix: yup.string().required(),
-      bdate: yup.date().required(),
-      age: yup.number().required().min(3),
-      sex: yup.string().required(),
-      cont_no: yup.number().required().min(11),
-      religion: yup.string().required(),
-      citizenship: yup.string().required(),
-      occupation: yup.string().required(),
-      status: yup.string().required(),
-      purok: yup.string().required(),
-      address: yup.string().required(),
-    });
-
-    const { handleSubmit, setFieldValue } = useForm({
-      validationSchema: yupSchema
-    });
-
-    const resident_id = useField('resident_id');
-    const fname = useField('fname');
-    const mname = useField('mname');
-    const lname = useField('lname');
-    const suffix = useField('suffix');
-    const bdate = useField('bdate');
-    const age = useField('age');
-    const sex = useField('sex');
-    const religion = useField('religion');
-    const citizenship = useField('citizenship');
-    const occupation = useField('occupation');
-    const status = useField('status');
-    const purok = useField('purok');
-    const address = useField('address');
-    const cont_no = useField('cont_no');
-
-
-
-    // const residentForm = reactive({
-    //   resident_id: '',
-    //   fname: '',
-    //   mname: '',
-    //   lname: '',
-    //   suffix: '',
-    //   bdate: '',
-    //   age: '',
-    //   sex: '',
-    //   religion: '',
-    //   citizenship: '',
-    //   occupation: '',
-    //   cont_no: '',
-    //   status: '',
-    //   purok: '',
-    //   address: ''
-    // })
-
-
-
-    //http
-    async function getResident() {
-      await HttpService.fetchData('/getResident?action=GET').then((response) => {
-        items.value = response.data
-      }).catch((e) => {
-        error.value = e.message
-      });
-    }
-
-    async function addResident(val) {
-      await HttpService.addData('/getResident?action=POST', val).then((response) => {
-        messageSnack.value = response.data.message
-        statustype.value = "success";
-
-        items.value.push({ ...val })
-        isUpdate.value = false
-        isActive.value = false;
-      }).catch((e) => {
-        statustype.value = "error";
-        messageSnack.value = e.message
-      });
-      snackBackOpen.value = true
-    }
-
-    async function editResident(val) {
-      await HttpService.updateData('/getResident?action=PUT', val).then((response) => {
-        messageSnack.value = response.data.message
-        statustype.value = "success";
-        const findIndex = items.value.findIndex((res) => res.resident_id === val.resident_id)
-        items.value[findIndex] = { ...val }
-        isUpdate.value = false
-        isActive.value = false;
-      }).catch((e) => {
-        statustype.value = "error"
-        messageSnack.value = e.message
-      });
-      snackBackOpen.value = true
-    }
-
-    async function deleteResident(id) {
-      await HttpService.deleteData('/getResident?action=DELETE', id).then((response) => {
-        messageSnack.value = response.data.message
-        statustype.value = 'success';
-
-        items.value = items.value.filter(res => res.resident_id !== `${id}`);
-      }).catch((e) => {
-        statustype.value = "error"
-        messageSnack.value = e.message
-      });
-      snackBackOpen.value = true
-    }
-
-
-    //methods
-
-    const closePopup = () => {
-      isActive.value = false;
-    };
-
-    const onSubmit = handleSubmit(values => {
-      if (isUpdate.value === true) {
-        editResident(values)
-      } else {
-        addResident(values)
-      }
-    });
-    // const submitForm = () => {
-    //   if (isUpdate.value === true) {
-    //     editResident()
-    //   } else {
-    //     addResident()
-    //   }
-    // }
-
-    function changeInsertTitle() {
-      const keys = Object.keys(yupSchema.fields);
-      for (const key of keys) {
-        setFieldValue(key, '')
-      }
-      title.value = "Insert Residents"
-      isUpdate.value = false
-
-    }
-
-    function editItem(val) {
-      const keys = Object.keys(yupSchema.fields);
-      for (const key of keys) {
-        setFieldValue(key, val[key])
-      }
-      // Object.assign(residentForm, val)
-      title.value = "Update Residents"
-      isUpdate.value = true
-      isActive.value = true
-    }
-
-
-
-    function deleteItem(id) {
-      Swal.fire({
-        title: "Are you sure?",
-        text: "Do you want to delete this data?",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, delete it!"
-      }).then((result) => {
-        if (result.isConfirmed) {
-          deleteResident(id)
-        }
-      });
-    }
-
-    //computed
-    //watchers
-    watchEffect(() => {
-
-    })
-
-    //lifecyclehooks
-    onMounted(() => {
-      getResident()
-    })
-
-    return {
-      title,
-      isActive,
-      // submitForm,
-      closePopup,
-      search,
-      items,
-      messageSnack,
-      statustype,
-      snackBackOpen,
-      editItem,
-      deleteItem,
-      headers,
-      genderItem,
-      religionItem,
-      citizenItem,
-      statusItem,
-      changeInsertTitle,
-      resident_id,
-      fname,
-      mname,
-      lname,
-      suffix,
-      bdate,
-      age,
-      sex,
-      religion,
-      citizenship,
-      occupation,
-      status,
-      purok,
-      address,
-      cont_no,
-      onSubmit,
-
-      // ...toRefs(residentForm)
-    }
-  },
+const yupSchema = yup.object().shape({
+  resident_id: yup.string(),
+  fname: yup.string().required(),
+  mname: yup.string().required(),
+  lname: yup.string().required(),
+  suffix: yup.string().required(),
+  bdate: yup.date().required(),
+  age: yup.number().required().min(3),
+  sex: yup.string().required(),
+  cont_no: yup.number().required().min(11),
+  religion: yup.string().required(),
+  citizenship: yup.string().required(),
+  occupation: yup.string().required(),
+  status: yup.string().required(),
+  purok: yup.string().required(),
+  address: yup.string().required(),
 });
+
+const { handleSubmit, setFieldValue } = useForm({
+  validationSchema: yupSchema
+});
+
+const resident_id = useField('resident_id');
+const fname = useField('fname');
+const mname = useField('mname');
+const lname = useField('lname');
+const suffix = useField('suffix');
+const bdate = useField('bdate');
+const age = useField('age');
+const sex = useField('sex');
+const religion = useField('religion');
+const citizenship = useField('citizenship');
+const occupation = useField('occupation');
+const cont_no = useField('cont_no');
+const status = useField('status');
+const purok = useField('purok');
+const address = useField('address');
+
+
+
+const getResident = async () => {
+  try {
+    const response = await HttpService.fetchData('/getResident?action=GET');
+    items.value = response.data;
+  } catch (e) {
+    error.value = e.message;
+  }
+};
+
+const addResident = async (val) => {
+  try {
+    const response = await HttpService.addData('/getResident?action=POST', val);
+    messageSnack.value = response.data.message;
+    statustype.value = "success";
+    items.value.push({ ...val });
+    isUpdate.value = false;
+    isActive.value = false;
+  } catch (e) {
+    statustype.value = "error";
+    messageSnack.value = e.message;
+  }
+  snackBackOpen.value = true;
+};
+
+const editResident = async (val) => {
+  try {
+    const response = await HttpService.updateData('/getResident?action=PUT', val);
+    messageSnack.value = response.data.message;
+    statustype.value = "success";
+    const findIndex = items.value.findIndex((res) => res.resident_id === val.resident_id);
+    items.value[findIndex] = { ...val };
+    isUpdate.value = false;
+    isActive.value = false;
+  } catch (e) {
+    statustype.value = "error";
+    messageSnack.value = e.message;
+  }
+  snackBackOpen.value = true;
+};
+
+const deleteResident = async (id) => {
+  try {
+    const response = await HttpService.deleteData('/getResident?action=DELETE', id);
+    messageSnack.value = response.data.message;
+    statustype.value = 'success';
+    items.value = items.value.filter(res => res.resident_id !== `${id}`);
+  } catch (e) {
+    statustype.value = "error";
+    messageSnack.value = e.message;
+  }
+  snackBackOpen.value = true;
+};
+
+
+//methods
+
+const closePopup = () => {
+  isActive.value = false;
+};
+
+const onSubmit = handleSubmit(values => {
+  if (isUpdate.value) {
+    editResident(values);
+  } else {
+    addResident(values);
+  }
+});
+
+
+const changeInsertTitle = () => {
+  // const keys = Object.keys(yupSchema.fields);
+  // for (const key of keys) {
+  //   setFieldValue(key, '')
+  // }
+  title.value = "Insert Residents";
+  isUpdate.value = false;
+};
+
+const editItem = (val) => {
+  const keys = Object.keys(yupSchema.fields);
+  for (const key of keys) {
+    setFieldValue(key, val[key])
+  }
+  title.value = "Update Residents";
+  isUpdate.value = true;
+  isActive.value = true;
+};
+
+
+
+const deleteItem = (id) => {
+  Swal.fire({
+    title: "Are you sure?",
+    text: "Do you want to delete this data?",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Yes, delete it!"
+  }).then((result) => {
+    if (result.isConfirmed) {
+      deleteResident(id);
+    }
+  });
+};
+
+//computed
+//watchers
+
+
+//lifecyclehooks
+onMounted(() => {
+  getResident()
+})
+
+
 </script>

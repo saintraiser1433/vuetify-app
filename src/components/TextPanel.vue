@@ -12,10 +12,6 @@
     </v-list>
 </template>
 
-<script>
-export default {
-    name: 'TextPanel'
-}
-</script>
+
 
 <style scoped></style>

@@ -10,18 +10,17 @@
     </v-snackbar>
 </template>
 
-<script>
-export default {
-    name: 'SnackBar',
-    props: {
-        text: String,
-        status: String
-    },
+<script setup>
+import { ref } from 'vue';
+import { defineProps } from 'vue';
 
-    data: () => ({
-        timeout: 5000,
-    }),
-}
+defineProps({
+    text: String,
+    status: String
+})
+
+const timeout = ref(5000);
+
 </script>
 
 <style scoped></style>

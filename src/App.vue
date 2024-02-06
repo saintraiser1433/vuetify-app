@@ -15,15 +15,8 @@
   </v-app>
 </template>
 
-<script>
+<script setup>
 import Navbar from './components/Navbar.vue'
 // import SideBar from './components/Sidebar.vue'
-export default {
-  name: 'App',
-  components: {
-    Navbar,
-  },
-
-}
 </script>
 

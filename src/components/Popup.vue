@@ -18,33 +18,27 @@
     </v-dialog>
 </template>
 
-<script>
-
-export default {
-    name: 'PopupView',
-    props: {
-        title: {
-            type: String,
-            default: ''
-        },
-        btnName: {
-            type: String,
-            default: ''
-        },
+<script setup>
+import { defineProps, defineEmits } from 'vue';
+defineProps({
+    title: {
+        type: String,
+        default: ''
     },
-    setup(props,context){
+    btnName: {
+        type: String,
+        default: ''
+    },
+})
+const emit = defineEmits(['openModal'])
 
-        function openModal(){
-            context.emit('openModal');
-        }
-
-        return {
-            openModal
-        }
-
-    }
-
+function openModal() {
+    emit('openModal');
 }
+
+
+
+
 </script>
 
 <style scoped></style>

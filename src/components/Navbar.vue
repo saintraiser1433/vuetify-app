@@ -38,33 +38,21 @@
     </nav>
 </template>
 
-<script>
+<script setup>
 import Sidebar from './Sidebar.vue';
 import { ref } from 'vue';
-export default {
-    name: 'NavbarView',
-    components: {
-        Sidebar
+const drawer = ref(true);
+const menu = ref([
+    {
+        icon: 'mdi-cogs',
+        title: 'Settings'
     },
-    setup() {
-        const drawer = ref(true);
-        const menu = ref([
-            {
-                icon: 'mdi-cogs',
-                title: 'Settings'
-            },
-            {
-                icon: 'mdi-arrow-right',
-                title: 'Logout'
-            }
-        ]);
-        return {
-            drawer,
-            menu
-        }
+    {
+        icon: 'mdi-arrow-right',
+        title: 'Logout'
     }
+]);
 
-}
 </script>
 
 <style scoped></style>
