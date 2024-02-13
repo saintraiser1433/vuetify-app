@@ -1,65 +1,92 @@
-import { createRouter, createWebHistory } from 'vue-router'
-
+import { createRouter, createWebHistory } from "vue-router";
 const routes = [
   {
-    path: '/',
-    name: 'Resident',
-    component: () => import(/* webpackChunkName: "resident" */ '../views/Residents.vue'),
-    meta: { title: 'Resident Panel', subtitle: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. ' },
+    path: "/",
+    name: "Dashboard",
+    component: () =>
+      import(/* webpackChunkName: "dashboard" */ "@/views/Purok.vue"),
+    meta: {
+      title: "Dashboard",
+      subtitle: "Lorem ipsum dolor sit amet consectetur adipisicing elit. ",
+    },
   },
   {
-    path: '/purok',
-    name: 'Purok',
-    component: () => import(/* webpackChunkName: "purok" */ '../views/Purok.vue'),
-    meta: { title: 'Purok Panel', subtitle: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. ' },
+    path: "/student",
+    name: "Student",
+    component: () =>
+      import(/* webpackChunkName: "students" */ "@/views/Purok.vue"),
+    meta: {
+      title: "Manage Student",
+      subtitle: "Lorem ipsum dolor sit amet consectetur adipisicing elit. ",
+    },
   },
   {
-    path: '/official',
-    name: 'Official',
-    component: () => import(/* webpackChunkName: "official" */ '../views/Officials.vue'),
-    meta: { title: 'Official Panel', subtitle: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. ' },
+    path: "/category",
+    name: "Category",
+    component: () =>
+      import(/* webpackChunkName: "students" */ "@/views/Purok.vue"),
+    meta: {
+      title: "Manage Categories",
+      subtitle: "Lorem ipsum dolor sit amet consectetur adipisicing elit. ",
+    },
   },
   {
-    path: '/blotter',
-    name: 'Blotter',
-    component: () => import(/* webpackChunkName: "blotter" */ '../views/Blotter.vue'),
-    meta: { title: 'Blotter Panel', subtitle: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. ' },
+    path: "/department",
+    name: "Department",
+    component: () =>
+      import(/* webpackChunkName: "students" */ "@/views/Purok.vue"),
+    meta: {
+      title: "Manage Department",
+      subtitle: "Lorem ipsum dolor sit amet consectetur adipisicing elit. ",
+    },
   },
   {
-    path: '/clearance',
-    name: 'Clearance',
-    component: () => import(/* webpackChunkName: "clearance" */ '../views/Clearance.vue'),
-    meta: { title: 'Clearance Panel',subtitle: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. ' },
+    path: "/inventory",
+    name: "Inventory",
+    component: () =>
+      import(/* webpackChunkName: "inventory" */ "@/views/Purok.vue"),
+    meta: {
+      title: "Manage Inventory",
+      subtitle:
+        "This panel represents list of assets available in science laboratory ",
+    },
   },
   {
-    path: '/archive',
-    name: 'Archive',
-    component: () => import(/* webpackChunkName: "archive" */ '../views/Archive.vue'),
-    meta: { title: 'Archive Panel', subtitle: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. ' },
+    path: "/returned",
+    name: "Returned",
+    component: () =>
+      import(/* webpackChunkName: "returned" */ "@/views/Purok.vue"),
+    meta: {
+      title: "Manage Returned Item",
+      subtitle: "Lorem ipsum dolor sit amet consectetur adipisicing elit. ",
+    },
   },
   {
-    path: '/settings',
-    name: 'Settings',
-    component: () => import(/* webpackChunkName: "settings" */ '../views/Settings.vue'),
-    meta: { title: 'Settings Panel',subtitle: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. ' },
+    path: "/transaction",
+    name: "Transaction",
+    component: () =>
+      import(/* webpackChunkName: "transaction" */ "@/views/Purok.vue"),
+    meta: {
+      title: "Manage Transaction",
+      subtitle: "Lorem ipsum dolor sit amet consectetur adipisicing elit. ",
+    },
   },
   {
-    path: '/accsettings',
-    name: 'AccSettings',
-    component: () => import(/* webpackChunkName: "settings" */ '../views/AccountSetting.vue'),
-    meta: { title: 'Account Settings Panel', subtitle: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. ' },
+    path: "/report",
+    name: "Report",
+    component: () =>
+      import(/* webpackChunkName: "reports" */ "@/views/Purok.vue"),
+    meta: {
+      title: "Manage Report",
+      subtitle: "Lorem ipsum dolor sit amet consectetur adipisicing elit. ",
+    },
   },
-  {
-    path: '/backupdb',
-    name: 'BackupDB',
-    component: () => import(/* webpackChunkName: "backup" */ '../views/Backup.vue'),
-    meta: { title: 'Backup and Restore Panel', subtitle: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. ' },
-  }
-]
+  { path: '/:pathMatch(.*)*', component: () => import(/* webpackChunkName: "transaction" */ "@/views/Officials.vue"), },
+];
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
-  routes
-})
+  routes,
+});
 
-export default router
+export default router;

@@ -12,6 +12,4 @@
     </v-list>
 </template>
 
-
-
 <style scoped></style>
